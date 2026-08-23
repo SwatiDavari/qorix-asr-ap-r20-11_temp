@@ -588,9 +588,9 @@ html_css_files = ["custom.css"]
 html_logo = "_static/qorix_logo.png"
 html_theme_options = {
     "icon": {"repo": "fontawesome/brands/github"},
-    "site_url": "https://swatidavari.github.io/Test-Repo/needs/",
-    "repo_url": "https://github.com/SwatiDavari/Test-Repo",
-    "repo_name": "Test-Repo",
+    "site_url": "https://swatidavari.github.io/qorix-asr-ap-r20-11_temp/needs/",
+    "repo_url": "https://github.com/SwatiDavari/qorix-asr-ap-r20-11_temp",
+    "repo_name": "qorix-asr-ap-r20-11_temp",
     # This project's srcdir is needs/, not the repo root, so doc2path()
     # returns paths relative to needs/ (e.g. "index.rst", not
     # "needs/index.rst") — edit_uri must carry the "/needs" prefix itself

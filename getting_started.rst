@@ -21,7 +21,7 @@ Clone and set up a virtual environment
 .. code-block:: bat
 
    git clone <this-repo-url>
-   cd test_repo
+   cd qorix-asr-ap-r20-11_temp
    python -m venv .venv
    .venv\Scripts\activate.bat
 
@@ -51,31 +51,34 @@ render ``.. uml::`` diagrams. Skip this unless you're editing one:
 Then point ``conf.py``'s ``plantuml`` setting at your downloaded
 ``plantuml.jar``.
 
-Populate organisation/ (governance content, from org-processes)
-------------------------------------------------------------------
+Populate organisation/ (governance content, from qorix-gnc + qorix-vnv)
+------------------------------------------------------------------------
 
-``organisation/`` is no longer committed to this repo — it's owned by the
-`org-processes <https://github.com/SwatiDavari/org-processes>`_ repo (a
-different team) and is only ever generated on disk locally, never checked
-in. **2026-08-21: CI now does this automatically** — both
-``.github/workflows/docs.yml`` and ``ci-needs.yml`` check out
-``org-processes`` and run ``scripts/sync_org_content.sh`` before building,
-so a fresh CI run no longer needs anything extra from you.
+``organisation/`` is no longer committed to this repo — it's owned by two
+sibling repos, each the single source of truth for its own slice:
+`qorix-gnc <https://github.com/SwatiDavari/qorix-gnc>`_ (governance,
+strategy, infrastructure, learning management, common framework, tools)
+and `qorix-vnv <https://github.com/SwatiDavari/qorix-vnv>`_ (``testing/``
+— ISO 29119 org-level test-process governance, split out of qorix-gnc on
+2026-08-23). Both are only ever generated on disk locally, never checked
+in. **CI does this automatically** — both ``.github/workflows/docs.yml``
+and ``ci-needs.yml`` check out ``qorix-gnc`` and ``qorix-vnv`` and run
+``scripts/sync_org_content.sh`` before building, so a fresh CI run no
+longer needs anything extra from you.
 
 Locally, this is still a manual step. ``qorix-engg.code-workspace``
-mounts a sibling checkout named ``Org_processes`` (note the casing —
-that's the workspace file's own folder name, not the real repo's; the
-real repo on GitHub is ``org-processes``, lowercase and hyphenated).
-``scripts/sync_org_content.sh`` defaults to looking for
-``../Org_processes``, so either clone the real repo using that exact
-local folder name, or pass its real path explicitly:
+mounts sibling checkouts named ``qorix-gnc`` and ``qorix-vnv``, matching
+their own names on GitHub. ``scripts/sync_org_content.sh`` defaults to
+looking for ``../qorix-gnc`` and ``../qorix-vnv``, so either clone both
+repos using those exact local folder names, or pass their real paths
+explicitly:
 
 .. code-block:: bat
 
-   :: if you cloned org-processes as a sibling folder under a different name
-   scripts\sync_org_content.sh ..\org-processes
+   :: if you cloned either repo as a sibling folder under a different name
+   scripts\sync_org_content.sh ..\qorix-gnc ..\qorix-vnv
 
-   :: or, matching the workspace file's assumed name
+   :: or, matching the workspace file's assumed names
    scripts\sync_org_content.sh
 
 Run this before building the root project or refreshing
@@ -83,7 +86,7 @@ Run this before building the root project or refreshing
 ``organisation/governance/`` physically present.
 
 .. note::
-   ``org-processes`` links its own child governance pages via prose
+   ``qorix-gnc`` (and ``qorix-vnv``) link their own child governance pages via prose
    (``:doc:`` references) rather than a toctree — a leftover workaround
    for Furo's sidebar rendering at full depth regardless of
    ``:maxdepth:``, from before this repo switched themes. Synced in here

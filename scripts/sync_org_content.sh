@@ -1,44 +1,68 @@
 #!/usr/bin/env bash
 # scripts/sync_org_content.sh
 #
-# Populates organisation/ from org-processes
-# (https://github.com/SwatiDavari/org-processes), which owns this content
-# as the single source of truth.
+# Populates organisation/ from two upstream repos, each the single source
+# of truth for its own slice of this content:
+#   - qorix-gnc (https://github.com/SwatiDavari/qorix-gnc)
+#     governance, strategy, infrastructure, learning management, common
+#     framework, tools.
+#   - qorix-vnv (https://github.com/SwatiDavari/qorix-vnv)
+#     testing/ (ISO 29119 org-level test-process governance).
 #
-# organisation/ is no longer committed to test_repo — see .gitignore. This
+# organisation/ is no longer committed to qorix-asr-ap-r20-11_temp — see .gitignore. This
 # script is what puts it on disk before any build, the same way
 # fetch_external_needs.sh populates needs/_external_needs/org_needs.json.
 # Run this BEFORE fetch_external_needs.sh or any sphinx-build of the root
 # project — both need organisation/governance/ physically present.
 #
-# 2026-08-21: org-processes is pushed to GitHub and CI is wired up.
-# .github/workflows/docs.yml and ci-needs.yml both check out
-# SwatiDavari/org-processes (pinned to 'main' by default, or to a specific
-# tag via the workflow_dispatch org_processes_ref input) and run this
+# 2026-08-21: org-processes (now qorix-gnc) is pushed to GitHub and CI is
+# wired up. .github/workflows/docs.yml and ci-needs.yml both check out
+# SwatiDavari/qorix-gnc (pinned to 'main' by default, or to a specific
+# tag via the workflow_dispatch qorix_gnc_ref input) and run this
 # script automatically before building. The local-sibling-checkout mode
 # below still exists for building locally without waiting on CI — see
 # getting_started.rst for the manual steps.
 #
-# Usage: scripts/sync_org_content.sh [path-to-org-processes]
-#   defaults to ../org-processes (sibling checkout, matching the workspace)
+# 2026-08-23: testing/ (ISO 29119) split out of qorix-gnc into its own
+# repo, qorix-vnv — qorix-gnc no longer owns that folder going forward.
+# This script now takes a second source path for it, checked out and
+# synced the same way as qorix-gnc (see docs.yml / ci-needs.yml's
+# "Checkout Qorix_vnv" step and qorix_vnv_ref input).
+#
+# Usage: scripts/sync_org_content.sh [path-to-qorix-gnc] [path-to-qorix-vnv]
+#   defaults to ../qorix-gnc and ../qorix-vnv (sibling checkouts, matching
+#   the workspace)
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SRC="${1:-${REPO_ROOT}/../org-processes}"
+SRC="${1:-${REPO_ROOT}/../qorix-gnc}"
+VNV_SRC="${2:-${REPO_ROOT}/../qorix-vnv}"
 DEST="${REPO_ROOT}/organisation"
 
 if [[ ! -d "${SRC}" ]]; then
-  echo "error: org-processes not found at ${SRC}" >&2
-  echo "       pass its path explicitly: scripts/sync_org_content.sh /path/to/org-processes" >&2
+  echo "error: qorix-gnc not found at ${SRC}" >&2
+  echo "       pass its path explicitly: scripts/sync_org_content.sh /path/to/qorix-gnc" >&2
   exit 1
+fi
+
+if [[ ! -d "${VNV_SRC}" ]]; then
+  echo "error: qorix-vnv not found at ${VNV_SRC}" >&2
+  echo "       pass its path explicitly: scripts/sync_org_content.sh /path/to/qorix-gnc /path/to/qorix-vnv" >&2
+  exit 1
+fi
+
+if [[ -d "${SRC}/testing" ]]; then
+  echo "warning: ${SRC}/testing still exists but is no longer used — testing/" >&2
+  echo "         is now synced from ${VNV_SRC} instead. Consider removing it" >&2
+  echo "         from qorix-gnc." >&2
 fi
 
 rm -rf "${DEST}"
 mkdir -p "${DEST}"
 
 copied=0
-for dir in common_framework governance infrastructure learning_management strategy testing tools; do
+for dir in common_framework governance infrastructure learning_management strategy tools; do
   if [[ -d "${SRC}/${dir}" ]]; then
     cp -r "${SRC}/${dir}" "${DEST}/${dir}"
     copied=$((copied + 1))
@@ -47,13 +71,24 @@ done
 
 if [[ "${copied}" -eq 0 ]]; then
   echo "error: no known governance folders found under ${SRC}" >&2
-  echo "       expected one or more of: common_framework governance infrastructure learning_management strategy testing tools" >&2
+  echo "       expected one or more of: common_framework governance infrastructure learning_management strategy tools" >&2
   exit 1
 fi
 
-# 2026-08-21: also sync org-processes' own root index.rst, which is the
-# single "Organization" landing page test_repo's root index.rst links to
-# (organisation/index) -- it lives at the org-processes repo root, not
+# testing/ (ISO 29119) now comes from qorix-vnv, not qorix-gnc — see the
+# 2026-08-23 note above.
+if [[ -d "${VNV_SRC}/testing" ]]; then
+  cp -r "${VNV_SRC}/testing" "${DEST}/testing"
+  copied=$((copied + 1))
+else
+  echo "error: ${VNV_SRC}/testing not found -- organisation/testing would be" >&2
+  echo "       missing, breaking the Testing toctree entry in organisation/index.rst" >&2
+  exit 1
+fi
+
+# 2026-08-21: also sync qorix-gnc's own root index.rst, which is the
+# single "Organization" landing page qorix-asr-ap-r20-11_temp's root index.rst links to
+# (organisation/index) -- it lives at the qorix-gnc repo root, not
 # inside any of the folders copied above, so the loop above never picks
 # it up on its own.
 if [[ -f "${SRC}/index.rst" ]]; then
@@ -64,7 +99,7 @@ else
   exit 1
 fi
 
-# 2026-08-21: also sync org-processes' own known_gaps.rst -- a root-level
+# 2026-08-21: also sync qorix-gnc's own known_gaps.rst -- a root-level
 # page (same reason as index.rst above: it's not inside any of the
 # folders copied by the loop above) that organisation/index.rst's own
 # toctree links to.
@@ -72,5 +107,5 @@ if [[ -f "${SRC}/known_gaps.rst" ]]; then
   cp "${SRC}/known_gaps.rst" "${DEST}/known_gaps.rst"
 fi
 
-echo "-- synced organisation/ from ${SRC} (${copied} folders + root index.rst)"
+echo "-- synced organisation/ from ${SRC} + ${VNV_SRC} (${copied} folders + root index.rst)"
 echo "   organisation/ is gitignored — regenerated by this script, never committed."

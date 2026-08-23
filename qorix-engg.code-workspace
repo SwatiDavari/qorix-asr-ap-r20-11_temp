@@ -1,11 +1,14 @@
 {
 	"folders": [
 		{
-			"name": "test_repo",
+			"name": "qorix-asr-ap-r20-11_temp",
 			"path": "."
 		},
 		{
-			"path": "../org-processes"
+			"path": "../qorix-gnc"
+		},
+		{
+			"path": "../qorix-vnv"
 		}
 	],
 	"settings": {

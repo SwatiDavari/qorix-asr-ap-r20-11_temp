@@ -368,9 +368,9 @@ html_css_files = ["custom.css"]
 html_logo = "_static/qorix_logo.png"
 html_theme_options = {
     "icon": {"repo": "fontawesome/brands/github"},
-    "site_url": "https://swatidavari.github.io/Test-Repo/",
-    "repo_url": "https://github.com/SwatiDavari/Test-Repo",
-    "repo_name": "Test-Repo",
+    "site_url": "https://swatidavari.github.io/qorix-asr-ap-r20-11_temp/",
+    "repo_url": "https://github.com/SwatiDavari/qorix-asr-ap-r20-11_temp",
+    "repo_name": "qorix-asr-ap-r20-11_temp",
     # Root project's srcdir IS the repo root, so doc2path() already returns
     # paths relative to the repo root (e.g. "index.rst") — edit_uri just
     # needs the branch. Verified against a real build's rendered edit-link

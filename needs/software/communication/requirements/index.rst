@@ -6,7 +6,7 @@ Communication Module — Feature Requirements
    ``docs/features/communication/``) supplied for this conversion, covering
    the top-level Communication feature plus its two sub-features (IPC,
    SOME/IP Gateway). All 58 source requirements are converted below
-   1:1 as individual ``.. feat::`` needs (test_repo has no ``feat_req``
+   1:1 as individual ``.. feat::`` needs (qorix-asr-ap-r20-11_temp has no ``feat_req``
    directive — feature-level requirement text is a ``feat::`` here, per
    ``feature/index.rst``'s existing ``feat_a_001`` example).
 

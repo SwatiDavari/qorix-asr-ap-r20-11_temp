@@ -4,13 +4,18 @@ on:
     paths: ["needs/**", "organisation/governance/**"]
   pull_request:
     paths: ["needs/**", "organisation/governance/**"]
-  # Lets a manual run pin the org-processes checkout to a specific tag
-  # (see tag-release.yml) instead of always floating main. Falls back to
-  # main when not manually triggered, or when left blank.
+  # Lets a manual run pin the qorix-gnc and/or qorix-vnv checkouts to a
+  # specific tag each (see tag-release.yml) instead of always floating
+  # main. Falls back to main when not manually triggered, or when left
+  # blank.
   workflow_dispatch:
     inputs:
-      org_processes_ref:
-        description: "org-processes ref to build against (tag, branch, or commit) - defaults to main"
+      qorix_gnc_ref:
+        description: "qorix-gnc ref to build against (tag, branch, or commit) - defaults to main"
+        required: false
+        default: "main"
+      qorix_vnv_ref:
+        description: "qorix-vnv ref to build against (tag, branch, or commit) - defaults to main"
         required: false
         default: "main"
 jobs:
@@ -21,22 +26,30 @@ jobs:
         working-directory: needs
     steps:
       - uses: actions/checkout@v4
-      # organisation/ is gitignored here on purpose - Org_processes is its
+      # organisation/ is gitignored here on purpose - Qorix_gnc is its
       # single source of truth (see scripts/sync_org_content.sh). Checked
       # out as a public repo; if this ever starts failing with a 403 auth
       # error instead of a clean 404/not-found, add "token: ''" below to
       # force an anonymous clone instead of the default (repo-scoped)
       # GITHUB_TOKEN. working-directory: . overrides this job's needs/
-      # default since Org_processes lands at the repo root, not inside needs/.
-      - name: Checkout Org_processes (organisation/ content)
+      # default since Qorix_gnc lands at the repo root, not inside needs/.
+      - name: Checkout Qorix_gnc (organisation/ content)
         uses: actions/checkout@v4
         with:
-          repository: SwatiDavari/org-processes
-          ref: ${{ github.event.inputs.org_processes_ref || 'main' }}
-          path: Org_processes
-      - name: Sync organisation/ from Org_processes
+          repository: SwatiDavari/qorix-gnc
+          ref: ${{ github.event.inputs.qorix_gnc_ref || 'main' }}
+          path: Qorix_gnc
+      # testing/ (ISO 29119) split out of Qorix_gnc into its own repo -
+      # same reasoning as the Qorix_gnc checkout above.
+      - name: Checkout Qorix_vnv (organisation/testing/ content)
+        uses: actions/checkout@v4
+        with:
+          repository: SwatiDavari/qorix-vnv
+          ref: ${{ github.event.inputs.qorix_vnv_ref || 'main' }}
+          path: Qorix_vnv
+      - name: Sync organisation/ from Qorix_gnc + Qorix_vnv
         working-directory: .
-        run: bash scripts/sync_org_content.sh Org_processes
+        run: bash scripts/sync_org_content.sh Qorix_gnc Qorix_vnv
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"

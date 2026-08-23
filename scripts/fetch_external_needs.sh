@@ -10,7 +10,7 @@
 # as YAML, so it can be run locally too.
 #
 # organisation/ (org_req's home) is no longer part of this repo — it's
-# owned by Org_processes and only ever materialized locally by
+# owned by qorix-gnc and only ever materialized locally by
 # scripts/sync_org_content.sh (gitignored, never committed here; see
 # scripts/README.md). This script used to assume organisation/ was always
 # present because it was committed; now it checks for it explicitly and
@@ -38,7 +38,7 @@ cd "${REPO_ROOT}"
 
 if [[ ! -d "${REPO_ROOT}/organisation/governance" ]]; then
   echo "error: organisation/governance/ not found — org_req needs live there and it's not present." >&2
-  echo "       organisation/ is no longer committed to this repo (owned by Org_processes now)." >&2
+  echo "       organisation/ is no longer committed to this repo (owned by qorix-gnc now)." >&2
   echo "       Run scripts/sync_org_content.sh first, then re-run this script." >&2
   exit 1
 fi

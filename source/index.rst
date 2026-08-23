@@ -11,7 +11,7 @@ browsable here for the first time, rather than only readable by opening
 the folder directly.
 
 Actual per-language *coding style rules* (as opposed to this
-scaffolding) live in the separate ``org-processes`` repo, under
+scaffolding) live in the separate ``qorix-gnc`` repo, under
 ``governance/coding guidelines/`` — deliberately not linked from here or
 anywhere else in this build: that folder is plain Markdown too, but
 belongs to a different repo/project (this page's ``myst_parser``

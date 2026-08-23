@@ -20,7 +20,7 @@ until it was added below).
    forward; the "ID prefix" columns in the tables below updated to their
    lowercase form for the same reason. The one ID deliberately left
    untouched is ``ORG_SMS_001`` — that's a need from the separate,
-   external ``org-processes`` project (imported via
+   external ``qorix-gnc`` project (imported via
    ``needs_external_needs``), not one defined in this project, so it's
    out of scope for this rename.
 

@@ -21,7 +21,7 @@ workspace root via `qorix-engg.code-workspace` (no multi-root, no separate
 repos to juggle).
 
 ```
-test_repo/
+qorix-asr-ap-r20-11_temp/
 ├── .github/
 │   └── workflows/
 │       ├── ci-needs.yml
