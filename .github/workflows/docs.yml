@@ -15,9 +15,9 @@ on:
         required: false
         default: "main"
       qorix_vnv_ref:
-        description: "qorix-vnv ref to build against (tag, branch, or commit) - defaults to main"
+        description: "qorix-vnv ref to build against (tag, branch, or commit) - defaults to master (qorix-vnv's default branch, unlike the others)"
         required: false
-        default: "main"
+        default: "master"
 
 permissions:
   contents: read
@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SwatiDavari/qorix-vnv
-          ref: ${{ github.event.inputs.qorix_vnv_ref || 'main' }}
+          ref: ${{ github.event.inputs.qorix_vnv_ref || 'master' }}
           path: Qorix_vnv
       - name: Sync organisation/ from Qorix_gnc + Qorix_vnv
         run: bash scripts/sync_org_content.sh Qorix_gnc Qorix_vnv
