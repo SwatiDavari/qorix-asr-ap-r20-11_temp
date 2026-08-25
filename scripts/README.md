@@ -22,6 +22,27 @@ scripts/fetch_external_needs.sh
 scripts/build_needs.sh
 ```
 
+## Pinning qorix-gnc/qorix-vnv: `known_good.json`
+
+CI (`docs.yml`, `ci-needs.yml`) doesn't check out `qorix-gnc`/`qorix-vnv`'s
+moving `main`/`master` by default — it checks out the commits pinned in
+`known_good.json` (repo root), falling back to a `workflow_dispatch`
+input only when one is explicitly given. `.github/workflows/
+integration-check.yml` is what keeps that pin current: daily (and on
+demand), it trial-builds this repo against `qorix-gnc`/`qorix-vnv`'s
+actual latest commits with the same `-W` gate `build_needs.sh` uses
+locally, and only opens a PR bumping `known_good.json` once that trial
+build has passed. A break in either dependency shows up there — as a
+failing scheduled run plus a tracking issue — without needing anyone to
+notice it first in a normal docs build. This is this repo's version of
+the "reference integration" repo Eclipse S-CORE's folder structure
+describes, built on the checkout+sync-script approach above instead of
+a second Bazel-based repo.
+
+Locally, `sync_org_content.sh` still works exactly as before — it
+doesn't read `known_good.json` itself, since it operates on whatever's
+already checked out at the sibling paths you pass it.
+
 ## Known gap: `build_safety_manual_pdf.sh` can't complete yet
 
 `needs/conf.py`'s `latex_documents` entry for this manual points at

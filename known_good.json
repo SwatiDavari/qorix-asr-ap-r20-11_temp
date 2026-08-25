@@ -1,0 +1,19 @@
+{
+  "_comment": "Pinned known-good refs for cross-repo integration, matching Eclipse S-CORE's reference-integration-repo concept (see the folder-structure feasibility note in the claude.ai project attached to this repo's session history). docs.yml and ci-needs.yml check out qorix-gnc and qorix-vnv at these refs by default (a workflow_dispatch input can still override for a one-off test build). .github/workflows/integration-check.yml is the only thing that should ever update this file automatically -- it trial-builds against each dependency's latest commit on its default branch and, only if that build passes with warnings-as-errors, opens a PR bumping the ref here. A manual edit + PR is also fine if you want to pin ahead of what integration-check.yml has tried.",
+  "modules": {
+    "qorix-gnc": {
+      "repository": "SwatiDavari/qorix-gnc",
+      "branch": "main",
+      "ref": "9fec18994da75d3da255b9685a57a029fa5119de",
+      "updated": "2026-08-23",
+      "updated_by": "manual seed -- not yet validated by integration-check.yml"
+    },
+    "qorix-vnv": {
+      "repository": "SwatiDavari/qorix-vnv",
+      "branch": "master",
+      "ref": "c9e00171f76458aac3cde5e41cd3891568958c9f",
+      "updated": "2026-08-23",
+      "updated_by": "manual seed -- not yet validated by integration-check.yml"
+    }
+  }
+}

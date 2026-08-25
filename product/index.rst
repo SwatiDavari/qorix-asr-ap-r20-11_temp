@@ -28,6 +28,21 @@ features covered earlier in this repo's traceability work — are each
 one click away instead of buried behind a generic link plus in-page
 navigation.
 
+**2026-08-23: gave "Needs" a real sidebar heading.** The nine entries
+above were, until now, listed directly in this page's own
+``:caption: Needs`` toctree — but sphinx-immaterial's global sidebar
+does not render a bare toctree caption as a heading; it only shows the
+title of the page(s) the toctree points at. Docs/Project
+Management/Product Verification/Source each name exactly one wrapper
+page (``doc/index``, ``management/index``, etc.), so that page's own
+title stands in as the group's heading. "Needs" named nine pages
+directly with no wrapper, so it had no page to hang a heading off —
+the nine entries rendered as flat, unheaded siblings of Docs/
+Architecture/etc., confirmed on the built site. Fixed by moving them
+into :doc:`needs_index`, a wrapper page following the exact same
+pattern as the other four groups, and pointing this toctree at that one
+page instead.
+
 .. toctree::
    :caption: Docs
    :maxdepth: 1
@@ -62,15 +77,7 @@ navigation.
    :caption: Needs
    :maxdepth: 1
 
-   /needs_types_definition
-   Overview <needs_redirect>
-   Pre-requirements <needs_prerequirements_redirect>
-   System <needs_system_redirect>
-   Communication <needs_software_communication_redirect>
-   Diagnostics <needs_software_diagnostics_redirect>
-   Safety <needs_safety_redirect>
-   Security <needs_security_redirect>
-   Quality <needs_quality_redirect>
+   needs_index
 
 .. toctree::
    :hidden:
