@@ -13,12 +13,16 @@ This repo has **two independent Sphinx projects**:
   system/feature/component/unit requirements and the safety chain
   (`sg`/`fsr`/`tsr`). Build it separately from inside `Needs/`.
 
-## One organization, one repo, one workspace
+## One organization, three repos, one workspace
 
-Everything — docs, product traceability, governance, and source for five
-languages — lives in this single repository, opened in VS Code as a single
-workspace root via `qorix-engg.code-workspace` (no multi-root, no separate
-repos to juggle).
+Docs, product traceability, and source for five languages live in this
+repository; organizational governance (`organisation/`) is owned by two
+sibling repos, `qorix-gnc` and `qorix-vnv` — see "Populate organisation/"
+in `getting_started.rst` and `scripts/README.md`. `qorix-engg.code-workspace`
+opens all three as a multi-root VS Code workspace: this repo, plus
+`qorix-gnc` and `qorix-vnv` mounted as `(read-only reference)` roots
+(each carries its own `.vscode/settings.json` enforcing that in the
+editor) — they're edited in their own repos, never through this one.
 
 ```
 qorix-asr-ap-r20-11_temp/

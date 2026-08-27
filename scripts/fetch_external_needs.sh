@@ -12,7 +12,11 @@
 # organisation/ (org_req's home) is no longer part of this repo — it's
 # owned by qorix-gnc and only ever materialized locally by
 # scripts/sync_org_content.sh (gitignored, never committed here; see
-# scripts/README.md). This script used to assume organisation/ was always
+# scripts/README.md). qorix-gnc (and qorix-vnv) are opened as read-only
+# reference roots in qorix-engg.code-workspace — this script, like
+# sync_org_content.sh, only ever reads their content.
+#
+# This script used to assume organisation/ was always
 # present because it was committed; now it checks for it explicitly and
 # fails fast with a clear message instead of silently exporting zero
 # org_req needs, which would make every `:links: ORG_*` citation in

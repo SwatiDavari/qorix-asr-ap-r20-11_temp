@@ -5,9 +5,11 @@
 			"path": "."
 		},
 		{
+			"name": "qorix-gnc (read-only reference)",
 			"path": "../qorix-gnc"
 		},
 		{
+			"name": "qorix-vnv (read-only reference)",
 			"path": "../qorix-vnv"
 		}
 	],
@@ -29,7 +31,10 @@
 		"editor.tabSize": 4,
 		"editor.insertSpaces": true,
 		"files.trimTrailingWhitespace": true,
-		"files.insertFinalNewline": true
+		"files.insertFinalNewline": true,
+		"chat.tools.terminal.autoApprove": {
+			"git push": true
+		}
 	},
 	"extensions": {
 		"recommendations": [

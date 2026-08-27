@@ -73,6 +73,13 @@ looking for ``../qorix-gnc`` and ``../qorix-vnv``, so either clone both
 repos using those exact local folder names, or pass their real paths
 explicitly:
 
+.. note::
+   The workspace opens both as ``(read-only reference)`` roots — each
+   sibling repo carries its own ``.vscode/settings.json`` setting
+   ``files.readonlyInclude`` so VS Code blocks accidental edits there.
+   They're owned upstream (``qorix-gnc``/``qorix-vnv`` on GitHub);
+   change their content in those repos, not through this workspace.
+
 .. code-block:: bat
 
    :: if you cloned either repo as a sibling folder under a different name

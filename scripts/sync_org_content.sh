@@ -9,6 +9,12 @@
 #   - qorix-vnv (https://github.com/SwatiDavari/qorix-vnv)
 #     testing/ (ISO 29119 org-level test-process governance).
 #
+#   Both are read-only reference checkouts from this repo's point of view —
+#   this script only ever reads from them, never writes into them.
+#   qorix-engg.code-workspace opens both as "(read-only reference)" roots,
+#   and each has its own .vscode/settings.json setting
+#   files.readonlyInclude so VS Code blocks accidental edits.
+#
 # organisation/ is no longer committed to qorix-asr-ap-r20-11_temp — see .gitignore. This
 # script is what puts it on disk before any build, the same way
 # fetch_external_needs.sh populates needs/_external_needs/org_needs.json.
